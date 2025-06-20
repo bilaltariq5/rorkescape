@@ -24,6 +24,4 @@ workflows:
     artifacts:
       - ios/build/**/*.app
       - ios/build/**/*.ipa
-    publishing:
-      app_store_connect:
-        api_key: Encrypted_API_Key_Placeholder
+
