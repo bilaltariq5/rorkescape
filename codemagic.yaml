@@ -1,0 +1,29 @@
+workflows:
+  react-native-ios:
+    name: Build iOS app
+    max_build_duration: 60
+    environment:
+      vars:
+        XCODE_WORKSPACE: "ios/escape.xcworkspace"
+        XCODE_SCHEME: "escape"
+      node: 16.20.0
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+          cd ios
+          pod install
+      - name: Build iOS app
+        script: |
+          cd ..
+          npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle
+          cd ios
+          xcodebuild -workspace $XCODE_WORKSPACE -scheme $XCODE_SCHEME -sdk iphoneos -configuration Release
+    artifacts:
+      - ios/build/**/*.app
+      - ios/build/**/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: Encrypted_API_Key_Placeholder
