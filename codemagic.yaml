@@ -1,27 +1,19 @@
 workflows:
-  react-native-ios:
-    name: Build iOS app
+  expo-ios:
+    name: Expo iOS Build
     max_build_duration: 60
     environment:
-      vars:
-        XCODE_WORKSPACE: "ios/escape.xcworkspace"
-        XCODE_SCHEME: "escape"
       node: 16.20.0
-      xcode: latest
-      cocoapods: default
+      expo: latest
     scripts:
       - name: Install dependencies
         script: |
-          npm install
-          cd ios
-          pod install
-      - name: Build iOS app
+          npm install --legacy-peer-deps
+      - name: Expo build for iOS
         script: |
-          cd ..
-          npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle
-          cd ios
-          xcodebuild -workspace $XCODE_WORKSPACE -scheme $XCODE_SCHEME -sdk iphoneos -configuration Release
+          npx expo install
+          npx expo export --platform ios
     artifacts:
-      - ios/build/**/*.app
-      - ios/build/**/*.ipa
+      - dist/**
+
 
